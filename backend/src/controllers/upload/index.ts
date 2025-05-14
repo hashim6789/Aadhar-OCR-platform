@@ -1,0 +1,1 @@
+export { UploadImagesController } from './UploadImagesController';

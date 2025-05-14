@@ -1,0 +1,1 @@
+export { IUploadImagesService } from './IUploadImagesService';

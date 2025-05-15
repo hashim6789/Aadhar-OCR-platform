@@ -1,47 +1,16 @@
-# FROM node:18-alpine
 
-# WORKDIR /app
-
-# COPY package*.json ./
-
-# RUN npm install
-
-# COPY . .
-
-# RUN npm run build
-
-# EXPOSE 3000
-
-# CMD ["node", "dist/index.js"]
-
-
-# Stage 1: build
-FROM node:18-alpine AS builder
-WORKDIR /app
-
-COPY package*.json ./
-RUN npm ci
+RUN npm run build
+RUN ls -l
 
 COPY . .
-RUN npm run build
 
-# Stage 2: production
-FROM node:18-alpine
-WORKDIR /app
+# Development stage
+FROM builder AS development
+# Set NODE_ENV to development
+ENV NODE_ENV=development
 
-COPY package*.json ./
-RUN npm ci --only=production
+# Expose the port the app runs on
+EXPOSE 5000
 
-COPY --from=builder /app/dist ./dist
-
-CMD ["node", "dist/index.js"]
-
-
-
-# # # Build image (replace backend with your image name)
-# # docker build -t backend .
-
-# # # Run container
-# # docker run -p 5000:5000 backend
-
-
+# Command to run the application(in development)
+CMD ["npm", "run", "dev"]

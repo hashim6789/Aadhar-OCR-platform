@@ -1,19 +1,25 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UploadFormData, uploadSchema } from "@/schema";
-import { getAxiosErrorMessage } from "@/lib";
-import { ImageType, IRecord } from "@/types";
+import { ImageType } from "@/types";
 import { AadharMessages } from "@/constants";
-import { uploadFileService } from "@/services";
+import { useAadharStore } from "@/store";
 
 export function useAadharUpload() {
-  const [frontPreview, setFrontPreview] = useState<string | null>(null);
-  const [backPreview, setBackPreview] = useState<string | null>(null);
-  const [error, setError] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [record, setRecord] = useState<IRecord | null>(null);
-  const [isResultOpen, setIsResultOpen] = useState<boolean>(false);
+  const {
+    setError,
+    frontPreview,
+    backPreview,
+    error,
+    isLoading,
+    record,
+    isResultOpen,
+    uploadAadhar,
+    setIsResultOpen,
+    setFrontPreview,
+    setBackPreview,
+  } = useAadharStore();
 
   const frontInputRef = useRef<HTMLInputElement>(null);
   const backInputRef = useRef<HTMLInputElement>(null);
@@ -60,21 +66,6 @@ export function useAadharUpload() {
     event.preventDefault();
   };
 
-  const onSubmit = async (data: UploadFormData) => {
-    setIsLoading(true);
-    setError("");
-
-    try {
-      const response = await uploadFileService(data);
-      setRecord(response.data);
-      setIsResultOpen(true);
-    } catch (err: unknown) {
-      setError(getAxiosErrorMessage(err, AadharMessages.ERROR_UPLOAD_FAILED));
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
     return () => {
       if (frontPreview) URL.revokeObjectURL(frontPreview);
@@ -88,17 +79,17 @@ export function useAadharUpload() {
     error,
     isLoading,
     record,
+    isResultOpen,
+    setIsResultOpen,
+    setFrontPreview,
+    setBackPreview,
     frontInputRef,
     backInputRef,
     errors,
-    isResultOpen,
-    setIsResultOpen,
     handleSubmit,
-    onSubmit,
+    onSubmit: uploadAadhar,
     handleFileChange,
     handleDrop,
     handleDragOver,
-    setFrontPreview,
-    setBackPreview,
   };
 }

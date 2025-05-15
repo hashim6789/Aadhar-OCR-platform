@@ -12,7 +12,7 @@ import { useAadharUpload } from "@/hooks/useAadharUpload";
 import { useAadharFetch } from "@/hooks/useAadharFetch";
 import AadharFetchForm from "@/components/AadharFetchForm";
 
-export default function AadharCombinedPage() {
+export default function LandingPagePage() {
   const {
     frontPreview,
     backPreview,

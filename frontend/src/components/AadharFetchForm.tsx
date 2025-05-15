@@ -23,7 +23,7 @@ import {
 import { FetchFormData, fetchFormSchema } from "@/schema";
 
 interface AadharFetchFormProps {
-  onFetchSubmit: (data: { aadharNo: string; dob: string }) => void;
+  onFetchSubmit: (aadharNo: string, dob: string) => Promise<void>;
   fetchLoading: boolean;
 }
 
@@ -46,10 +46,10 @@ export default function AadharFetchForm({
 
   // Format Aadhar number as XXXX XXXX XXXX
   const formatAadharNumber = (value: string): string => {
-    const digits = value.replace(/\D/g, "");
+    // const digits = value.replace(/\D/g, "");
     const groups = [];
-    for (let i = 0; i < digits.length; i += 4) {
-      groups.push(digits.slice(i, i + 4));
+    for (let i = 0; i < value.length; i += 4) {
+      groups.push(value.slice(i, i + 4));
     }
     return groups.join(" ").trim();
   };
@@ -60,6 +60,7 @@ export default function AadharFetchForm({
     onChange: (value: string) => void
   ) => {
     const value = e.target.value.replace(/\D/g, "");
+    console.log(value);
     if (value.length <= 12) {
       setAadharInput(formatAadharNumber(value));
       onChange(value); // Store raw digits
@@ -68,14 +69,14 @@ export default function AadharFetchForm({
 
   // Handle form submission
   const handleSubmit = (data: FetchFormData) => {
-    const formattedData = {
-      aadharNo: data.aadharNo,
-      dob: `${data.year}-${data.month.padStart(2, "0")}-${data.day.padStart(
-        2,
-        "0"
-      )}`,
-    };
-    onFetchSubmit(formattedData);
+    console.log(data);
+
+    const aadharNo = data.aadharNo.replace(/(\d{4})/g, "$1 ").trim();
+    const dob = `${data.year}-${data.month.padStart(
+      2,
+      "0"
+    )}-${data.day.padStart(2, "0")}`;
+    onFetchSubmit(aadharNo, dob);
   };
 
   return (

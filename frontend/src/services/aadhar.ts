@@ -41,9 +41,13 @@ export async function uploadFileService(
     formData.append("frontImage", data.frontImage);
     formData.append("backImage", data.backImage);
 
-    const response = await axiosInstance.post<IRecord>("/uploads", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+    const response = await axiosInstance.post<IRecord>(
+      "/aadhar/uploads",
+      formData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      }
+    );
     showSuccessToast("File uploaded successfully.");
     return { data: response.data, status: response.status };
   } catch (error: unknown) {

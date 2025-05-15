@@ -1,6 +1,6 @@
 import express from 'express';
-import { uploadRouter } from './upload.routes';
+import { aadharRouter } from './aadhar.routes';
 
 export const apiRouter = express.Router();
 
-apiRouter.use('/uploads', uploadRouter);
+apiRouter.use('/aadhar', aadharRouter);

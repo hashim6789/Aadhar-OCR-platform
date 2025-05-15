@@ -58,6 +58,6 @@ const recordSchema = new Schema<IRecord>(
 
 // Index for faster queries
 recordSchema.index({ email: 1 });
-recordSchema.index({ aadharNo: 1 }, { sparse: true });
+recordSchema.index({ aadharNo: 1 }, { sparse: true, unique: true });
 
 export const RecordModel = model<IRecord>('Record', recordSchema);

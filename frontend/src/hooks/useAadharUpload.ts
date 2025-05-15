@@ -2,9 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UploadFormData, uploadSchema } from "@/schema";
-import { axiosInstance, getAxiosErrorMessage } from "@/lib";
+import { getAxiosErrorMessage } from "@/lib";
 import { ImageType, IRecord } from "@/types";
-import { UPLOAD_STATUS } from "@/constants";
+import { AadharMessages } from "@/constants";
+import { uploadFileService } from "@/services";
 
 export function useAadharUpload() {
   const [frontPreview, setFrontPreview] = useState<string | null>(null);
@@ -39,8 +40,8 @@ export function useAadharUpload() {
       setPreview(null);
       setError(
         field === "frontImage"
-          ? UPLOAD_STATUS.ERROR_INVALID_FRONT_IMAGE
-          : UPLOAD_STATUS.ERROR_INVALID_BACK_IMAGE
+          ? AadharMessages.ERROR_INVALID_FRONT_IMAGE
+          : AadharMessages.ERROR_INVALID_BACK_IMAGE
       );
     }
   };
@@ -62,20 +63,13 @@ export function useAadharUpload() {
   const onSubmit = async (data: UploadFormData) => {
     setIsLoading(true);
     setError("");
-    const formData = new FormData();
-    formData.append("frontImage", data.frontImage);
-    formData.append("backImage", data.backImage);
 
     try {
-      const response = await axiosInstance.post<IRecord>("/uploads", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await uploadFileService(data);
       setRecord(response.data);
       setIsResultOpen(true);
     } catch (err: unknown) {
-      setError(getAxiosErrorMessage(err, UPLOAD_STATUS.ERROR_UPLOAD_FAILED));
+      setError(getAxiosErrorMessage(err, AadharMessages.ERROR_UPLOAD_FAILED));
     } finally {
       setIsLoading(false);
     }

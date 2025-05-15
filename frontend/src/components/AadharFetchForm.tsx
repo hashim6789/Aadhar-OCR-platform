@@ -20,7 +20,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { FetchFormData, fetchSchema } from "@/schema";
+import { FetchFormData, fetchFormSchema } from "@/schema";
 
 interface AadharFetchFormProps {
   onFetchSubmit: (data: { aadharNo: string; dob: string }) => void;
@@ -35,7 +35,7 @@ export default function AadharFetchForm({
 
   // Initialize form with react-hook-form and zod
   const form = useForm<FetchFormData>({
-    resolver: zodResolver(fetchSchema),
+    resolver: zodResolver(fetchFormSchema),
     defaultValues: {
       aadharNo: "",
       year: "",

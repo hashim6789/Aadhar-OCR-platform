@@ -15,7 +15,7 @@ export const uploadSchema = z.object({
 export type UploadFormData = z.infer<typeof uploadSchema>;
 
 // Form schema with zod validation
-export const fetchSchema = z
+export const fetchFormSchema = z
   .object({
     aadharNo: z
       .string()
@@ -94,4 +94,17 @@ export const fetchSchema = z
     }
   );
 
-export type FetchFormData = z.infer<typeof fetchSchema>;
+export type FetchFormData = z.infer<typeof fetchFormSchema>;
+
+export const fetchFormattedSchema = z.object({
+  aadharNo: z
+    .string()
+    .regex(/^\d{12}$/, "Aadhar number must be 12 digits")
+    .min(12, "Aadhar number must be 12 digits")
+    .max(12, "Aadhar number must be 12 digits"),
+  dob: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Date of birth must be in YYYY-MM-DD format"),
+});
+
+export type FetchFormattedData = z.infer<typeof fetchFormattedSchema>;

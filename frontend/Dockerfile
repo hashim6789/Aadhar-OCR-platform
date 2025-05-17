@@ -6,7 +6,7 @@ WORKDIR /app/frontend
 COPY package.json package-lock.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 # # Install serve as a local dependency
 # RUN npm install serve
@@ -21,4 +21,4 @@ ENV VITE_SERVER_ORIGIN=$VITE_SERVER_ORIGIN
 # Run Vite build and verify output
 RUN npm run build
 
-CMD ["npm", "run" "dev"]
+CMD ["npm", "run", "dev"]

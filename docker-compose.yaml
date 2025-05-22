@@ -23,7 +23,7 @@ services:
       VITE_SERVER_ORIGIN: http://localhost
     working_dir: /app
     volumes:
-      - mt-frontend-dist:/app/frontend/dist
+      - mt-frontend-dist:/app/dist
     command: "npm run dev"
 
   backend:
@@ -38,7 +38,7 @@ services:
       - ./backend/.env
     working_dir: /app
     volumes:
-      - ./backend:/app/backend
+      - ./backend:/app
     command: npm run dev
 
 volumes:

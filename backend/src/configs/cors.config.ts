@@ -7,7 +7,7 @@ import { ENV } from './env.config';
 const domain = ENV.DOMAIN;
 const allowedOrigins: string[] =
   ENV.NODE_ENV === 'production'
-    ? [`http://${domain}`, `https://${domain}`]
+    ? [ENV.FRONTEND_URL, `http://${domain}:`, `https://${domain}`]
     : [ENV.FRONTEND_URL, `http://${domain}`];
 
 /**
@@ -15,6 +15,7 @@ const allowedOrigins: string[] =
  */
 export const corsOptions: CorsOptions = {
   origin: (origin, callback) => {
+    console.log('Incoming request origin:', origin);
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true); // Allow the origin
     } else {

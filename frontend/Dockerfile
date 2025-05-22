@@ -1,6 +1,6 @@
 FROM node:18-alpine
 
-WORKDIR /app/frontend
+WORKDIR /app
 
 # Copy package.json and package-lock.json (if exists)
 COPY package.json package-lock.json ./

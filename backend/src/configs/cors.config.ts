@@ -6,7 +6,9 @@ import { ENV } from './env.config';
  */
 const domain = ENV.DOMAIN;
 const allowedOrigins: string[] =
-  ENV.NODE_ENV === 'production' ? [`https://${domain}`] : [ENV.FRONTEND_URL, `http://${domain}`];
+  ENV.NODE_ENV === 'production'
+    ? [`http://${domain}`, `https://${domain}`]
+    : [ENV.FRONTEND_URL, `http://${domain}`];
 
 /**
  * CORS options used globally in the application.

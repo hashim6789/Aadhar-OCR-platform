@@ -23,10 +23,10 @@ jobs:
         run: echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
 
       - name: Build backend Docker image
-        run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/task_backend:latest .
+        run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/aadhar_ocr_backend:latest .
 
       - name: Push backend Docker image
-        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/task_backend:latest
+        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/aadhar_ocr_backend:latest
 
   frontend:
     runs-on: ubuntu-latest
@@ -45,7 +45,7 @@ jobs:
         run: echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
 
       - name: Build frontend Docker image
-        run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/task_frontend:latest .
+        run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/aadhar_ocr_frontend:latest .
 
       - name: Push frontend Docker image
-        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/task_frontend:latest
+        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/aadhar_ocr_frontend:latest

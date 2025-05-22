@@ -7,7 +7,7 @@ import { ENV } from './env.config';
 const domain = ENV.DOMAIN;
 const allowedOrigins: string[] =
   ENV.NODE_ENV === 'production'
-    ? [ENV.FRONTEND_URL, `http://${domain}:`, `https://${domain}`]
+    ? [ENV.FRONTEND_URL, `http://${domain}`, `https://${domain}`]
     : [ENV.FRONTEND_URL, `http://${domain}`];
 
 /**

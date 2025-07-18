@@ -15,8 +15,8 @@ export class OCRProvider {
         logger: (m) => console.log(`OCR Progress: ${m.status} (${(m.progress * 100).toFixed(2)}%)`),
       });
       return text;
-    } catch (error: any) {
-      throw new Error(`OCR failed: ${error.message}`);
+    } catch (error: unknown) {
+      throw new Error(`OCR failed: ${error instanceof Error ? error.message : ''}`);
     }
   }
 }

@@ -3,6 +3,7 @@ import multer from 'multer';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { Request, Express } from 'express';
+import { uploadResponse } from '@/constants';
 
 interface FilePaths {
   frontImagePath: string;
@@ -21,8 +22,8 @@ export class UploadProvider {
         cb: (error: Error | null, destination: string) => void,
       ) => {
         try {
-          await fs.mkdir('uploads', { recursive: true });
-          cb(null, 'uploads/');
+          await fs.mkdir(uploadResponse.UPLOAD_FOLDER, { recursive: true });
+          cb(null, `${uploadResponse.UPLOAD_FOLDER}/`);
         } catch (error: any) {
           cb(error, '');
         }
@@ -46,7 +47,7 @@ export class UploadProvider {
         if (mimetype && extname) {
           return cb(null, true);
         }
-        cb(new Error('Only PNG and JPEG images are allowed'));
+        cb(new Error(uploadResponse.PNG_JPEG_ALLOWED));
       },
       limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
     });
@@ -57,8 +58,8 @@ export class UploadProvider {
    */
   handleUpload() {
     return this.upload.fields([
-      { name: 'frontImage', maxCount: 1 },
-      { name: 'backImage', maxCount: 1 },
+      { name: uploadResponse.FRONT_IMAGE, maxCount: 1 },
+      { name: uploadResponse.BACK_IMAGE, maxCount: 1 },
     ]);
   }
 
@@ -69,7 +70,7 @@ export class UploadProvider {
    */
   validateFiles(files: { [fieldname: string]: Express.Multer.File[] } | undefined): FilePaths {
     if (!files || !files.frontImage || !files.backImage) {
-      throw new Error('Both front and back images are required');
+      throw new Error(uploadResponse.FRONT_AND_BACK_REQUIRED);
     }
     return {
       frontImagePath: files.frontImage[0].path,

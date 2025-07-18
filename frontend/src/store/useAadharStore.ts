@@ -55,7 +55,6 @@ export const useAadharStore = create<AadharState>((set) => ({
     set({ isLoading: true, error: "" });
     try {
       const response = await fetchAadhaarService(aadharNo, dob);
-      console.log(response.data);
       set({ record: response.data, isResultOpen: true });
     } catch (err) {
       set({

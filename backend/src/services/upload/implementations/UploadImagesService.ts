@@ -1,19 +1,17 @@
 import { IUploadImagesService } from '../interfaces';
 import { IRecordRepository } from '@/repositories';
 import { ICreateRecordDTO, ResponseDTO } from '@/types';
-import { ICloudinaryProvider, IOCRProvider, IUploadProvider } from '@/providers/interfaces';
+import { ICloudinaryProvider, IOCRProvider } from '@/providers/interfaces';
 import { aadharResponse } from '@/constants';
 import { IRecord } from '@/models';
 
 export class UploadImagesService implements IUploadImagesService {
   constructor(
     private recordRepository: IRecordRepository,
-    private uploadProvider: IUploadProvider,
     private cloudinaryProvider: ICloudinaryProvider,
     private ocrProvider: IOCRProvider,
   ) {
     this.recordRepository = recordRepository;
-    this.uploadProvider = uploadProvider;
     this.cloudinaryProvider = cloudinaryProvider;
     this.ocrProvider = ocrProvider;
   }
@@ -110,17 +108,15 @@ export class UploadImagesService implements IUploadImagesService {
         };
       }
 
-      // console.log('back data', backText);
       const createdRecord = await this.recordRepository.create(recordData);
-      console.log('front data', createdRecord);
 
       return {
         data: createdRecord,
         success: true,
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
-        data: { error: error.message || aadharResponse.PROCESSING_FAILED },
+        data: { error: error instanceof Error ? error.message : aadharResponse.PROCESSING_FAILED },
         success: false,
       };
     }

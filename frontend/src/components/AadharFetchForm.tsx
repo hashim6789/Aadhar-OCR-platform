@@ -60,7 +60,6 @@ export default function AadharFetchForm({
     onChange: (value: string) => void
   ) => {
     const value = e.target.value.replace(/\D/g, "");
-    console.log(value);
     if (value.length <= 12) {
       setAadharInput(formatAadharNumber(value));
       onChange(value); // Store raw digits
@@ -69,8 +68,6 @@ export default function AadharFetchForm({
 
   // Handle form submission
   const handleSubmit = (data: FetchFormData) => {
-    console.log(data);
-
     const aadharNo = data.aadharNo.replace(/(\d{4})/g, "$1 ").trim();
     const dob = `${data.year}-${data.month.padStart(
       2,

@@ -28,9 +28,9 @@ export class FetchAadharService implements IFetchAadharsService {
         data: existingRecord,
         success: true,
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
-        data: { error: error.message || aadharResponse.PROCESSING_FAILED },
+        data: { error: error instanceof Error ? error.message : aadharResponse.PROCESSING_FAILED },
         success: false,
       };
     }

@@ -24,8 +24,10 @@ export class CloudinaryProvider {
         resource_type: 'image',
       });
       return result.secure_url;
-    } catch (error: any) {
-      throw new Error(`Cloudinary upload failed: ${error.message}`);
+    } catch (error: unknown) {
+      throw new Error(
+        `Cloudinary upload failed: ${error instanceof Error ? error.message : 'cloudinary error'}`,
+      );
     }
   }
 
@@ -36,8 +38,10 @@ export class CloudinaryProvider {
   async deleteImage(publicId: string): Promise<void> {
     try {
       await cloudinary.uploader.destroy(publicId);
-    } catch (error: any) {
-      console.error(`Failed to delete image ${publicId}:`, error.message);
+    } catch (error: unknown) {
+      throw new Error(
+        `Failed to delete image ${publicId}: ${error instanceof Error ? error.message : 'cloudinary error'}`,
+      );
     }
   }
 
@@ -48,8 +52,10 @@ export class CloudinaryProvider {
   async cleanupLocalFile(filePath: string): Promise<void> {
     try {
       await fs.unlink(filePath);
-    } catch (error: any) {
-      console.error(`Failed to delete local file ${filePath}:`, error.message);
+    } catch (error: unknown) {
+      throw new Error(
+        `Failed to delete local file ${filePath}: ${error instanceof Error ? error.message : 'cloudinary error'}`,
+      );
     }
   }
 }

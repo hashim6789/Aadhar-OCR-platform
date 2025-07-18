@@ -112,7 +112,6 @@ export class UploadImagesService implements IUploadImagesService {
 
       // console.log('back data', backText);
       const createdRecord = await this.recordRepository.create(recordData);
-      console.log('front data', createdRecord);
 
       return {
         data: createdRecord,

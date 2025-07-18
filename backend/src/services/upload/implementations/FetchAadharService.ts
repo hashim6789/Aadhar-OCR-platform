@@ -13,7 +13,6 @@ export class FetchAadharService implements IFetchAadharsService {
     try {
       const existingRecord = await this.recordRepository.findOne({ aadharNo });
       const date = new Date(dob);
-      console.log(date);
       if (
         !existingRecord ||
         !existingRecord.dob ||

@@ -1,4 +1,5 @@
 import { ENV } from '@/configs';
+import { HttpResponse, uploadResponse } from '@/constants';
 import { v2 as cloudinary } from 'cloudinary';
 import { promises as fs } from 'fs';
 
@@ -20,13 +21,13 @@ export class CloudinaryProvider {
     try {
       const result = await cloudinary.uploader.upload(filePath, {
         public_id: publicId,
-        folder: 'aadhar_images',
-        resource_type: 'image',
+        folder: uploadResponse.CLOUDINARY_FOLDER,
+        resource_type: uploadResponse.RESOURCE_TYPE,
       });
       return result.secure_url;
     } catch (error: unknown) {
       throw new Error(
-        `Cloudinary upload failed: ${error instanceof Error ? error.message : 'cloudinary error'}`,
+        `Cloudinary upload failed: ${error instanceof Error ? error.message : HttpResponse.CLOUDINARY_ERROR}`,
       );
     }
   }
@@ -40,7 +41,7 @@ export class CloudinaryProvider {
       await cloudinary.uploader.destroy(publicId);
     } catch (error: unknown) {
       throw new Error(
-        `Failed to delete image ${publicId}: ${error instanceof Error ? error.message : 'cloudinary error'}`,
+        `Failed to delete image ${publicId}: ${error instanceof Error ? error.message : HttpResponse.CLOUDINARY_ERROR}`,
       );
     }
   }
@@ -54,7 +55,7 @@ export class CloudinaryProvider {
       await fs.unlink(filePath);
     } catch (error: unknown) {
       throw new Error(
-        `Failed to delete local file ${filePath}: ${error instanceof Error ? error.message : 'cloudinary error'}`,
+        `Failed to delete local file ${filePath}: ${error instanceof Error ? error.message : HttpResponse.CLOUDINARY_ERROR}`,
       );
     }
   }
